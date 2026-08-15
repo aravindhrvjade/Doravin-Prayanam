@@ -1,0 +1,580 @@
+/* =========================================================
+   DORAVIN PRAYANAM — COLORFUL CARTOON UI
+   ========================================================= */
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --purple: #6c4cff;
+  --pink: #ff4fa3;
+  --orange: #ff8a00;
+  --yellow: #ffd84d;
+  --green: #20c997;
+  --dark: #25213b;
+  --white: rgba(255,255,255,.96);
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  font-family: "Trebuchet MS", Arial, sans-serif;
+  color: var(--dark);
+  background: #8ed8ff;
+}
+
+button, input { font: inherit; }
+
+button {
+  border: 0;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.hidden { display: none !important; }
+
+/* ---------- Screens ---------- */
+
+.screen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  visibility: hidden;
+  opacity: 0;
+  transform: scale(1.04);
+  transition: opacity .55s ease, transform .55s ease, visibility .55s;
+  overflow: hidden;
+}
+
+.screen.active {
+  visibility: visible;
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* ---------- Intro ---------- */
+
+.intro {
+  background:
+    radial-gradient(circle at 78% 18%, rgba(255,255,255,.8) 0 6%, transparent 7%),
+    linear-gradient(180deg, #68d5ff 0 55%, #7ed957 55% 100%);
+}
+
+.intro::after {
+  content: "";
+  position: absolute;
+  left: -5%;
+  right: -5%;
+  bottom: -65px;
+  height: 130px;
+  background: #5fbd4f;
+  border-radius: 50% 50% 0 0;
+  box-shadow: inset 0 14px rgba(255,255,255,.12);
+}
+
+.intro-characters {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.sun {
+  position: absolute;
+  top: 7%;
+  right: 10%;
+  font-size: clamp(55px, 8vw, 100px);
+  animation: sunPulse 2.5s infinite;
+}
+
+.intro-dora {
+  position: absolute;
+  width: clamp(135px, 16vw, 220px);
+  left: 8%;
+  bottom: 8%;
+  animation: characterWalk 3s infinite;
+  filter: drop-shadow(0 14px 10px rgba(0,0,0,.18));
+}
+
+.intro-bujji {
+  position: absolute;
+  width: clamp(105px, 12vw, 165px);
+  left: 27%;
+  bottom: 8%;
+  animation: float 1.8s infinite;
+  filter: drop-shadow(0 14px 10px rgba(0,0,0,.18));
+}
+
+.intro-gift {
+  position: absolute;
+  width: clamp(55px, 7vw, 95px);
+  left: 21%;
+  bottom: 23%;
+  animation: giftFloat 1s infinite;
+}
+
+.cloud {
+  position: absolute;
+  z-index: 1;
+  font-size: clamp(45px, 6vw, 80px);
+  opacity: .9;
+  animation: cloudMove 22s linear infinite;
+}
+
+.cloud-1 { left: -100px; top: 9%; }
+.cloud-2 { left: -300px; top: 25%; animation-delay: 7s; }
+.cloud-3 { left: -500px; top: 15%; animation-delay: 13s; }
+
+.card {
+  position: relative;
+  z-index: 20;
+  width: min(500px, 92vw);
+  padding: 30px;
+  text-align: center;
+  background: var(--white);
+  border: 4px solid rgba(255,255,255,.7);
+  border-radius: 30px;
+  box-shadow: 0 22px 60px rgba(34,24,75,.28);
+  backdrop-filter: blur(8px);
+}
+
+.intro-card {
+  margin-left: 30%;
+  margin-right: 4%;
+  animation: cardIn .7s ease both;
+}
+
+.badge {
+  display: inline-block;
+  padding: 7px 13px;
+  margin-bottom: 10px;
+  border-radius: 999px;
+  color: white;
+  background: linear-gradient(90deg, var(--purple), var(--pink));
+  font-size: .78rem;
+  font-weight: 900;
+  letter-spacing: 1px;
+}
+
+.card h1 {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  line-height: 1;
+  margin-bottom: 14px;
+  color: #5b3be7;
+  text-shadow: 2px 3px 0 #e7ddff;
+}
+
+.card h1 span { color: #ff4f9a; }
+
+.lead {
+  font-size: 1.05rem;
+  font-weight: 700;
+  line-height: 1.5;
+  margin-bottom: 18px;
+}
+
+.route {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 7px;
+  padding: 12px;
+  margin: 15px 0;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #f3efff, #fff0f7);
+  color: #4a3c7c;
+  font-weight: 900;
+  font-size: .88rem;
+}
+
+.route i { color: var(--pink); font-style: normal; }
+
+.button-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+
+.primary-btn,
+.secondary-btn,
+.answer-btn,
+.choice-btn {
+  min-width: 145px;
+  padding: 13px 18px;
+  border-radius: 15px;
+  color: white;
+  font-weight: 900;
+  box-shadow: 0 6px 0 rgba(55,30,110,.25);
+  transition: transform .18s ease, filter .18s ease;
+}
+
+.primary-btn {
+  background: linear-gradient(135deg, #ff8a00, #ff3d81);
+}
+
+.secondary-btn {
+  background: linear-gradient(135deg, #7357ff, #3f8cff);
+}
+
+.answer-btn {
+  background: linear-gradient(135deg, #00b894, #20c997);
+}
+
+.choice-btn {
+  background: linear-gradient(135deg, #6c4cff, #a24cff);
+  min-width: 120px;
+}
+
+button:hover {
+  transform: translateY(-3px) scale(1.02);
+  filter: brightness(1.05);
+}
+
+button:active {
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 rgba(55,30,110,.25);
+}
+
+.hint {
+  margin-top: 17px;
+  font-size: .82rem;
+  color: #716b83;
+  font-weight: 700;
+}
+
+/* ---------- Scene backgrounds ---------- */
+
+.scene { background-size: cover; background-position: center; }
+
+.mountain { background-image: url("images/mountain.jpg"); }
+.river { background-image: url("images/river.jpg"); }
+.forest { background-image: url("images/forest.jpg"); }
+.school { background-image: url("images/school.jpg"); }
+.house { background-image: url("images/house.jpg"); }
+
+.scene-shade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(25,16,70,.10), rgba(25,16,70,.30));
+  pointer-events: none;
+}
+
+.location-tag {
+  position: absolute;
+  z-index: 25;
+  top: 70px;
+  left: 20px;
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.88);
+  color: #4d3bb2;
+  font-weight: 900;
+  box-shadow: 0 8px 25px rgba(0,0,0,.15);
+}
+
+.dora, .gift, .ghost, .boat, .fox, .friends, .final-gift, .teacher {
+  position: absolute;
+  z-index: 10;
+}
+
+.dora { filter: drop-shadow(0 12px 9px rgba(0,0,0,.20)); }
+
+.mountain-dora { width: 180px; left: 8%; bottom: 7%; animation: characterWalk 3s infinite; }
+.mountain-gift { width: 65px; left: 20%; bottom: 18%; animation: giftFloat 1s infinite; }
+.ghost { width: 180px; left: 46%; bottom: 35%; animation: ghostFloat 2s infinite; }
+
+.river-dora { width: 145px; left: 6%; bottom: 27%; }
+.river-gift { width: 55px; left: 15%; bottom: 37%; animation: giftFloat 1s infinite; }
+.boat { width: 230px; left: 4%; bottom: 18%; transition: left 1.6s ease; }
+.boat-moving { left: 48%; }
+
+.forest-dora { width: 165px; left: 8%; bottom: 9%; }
+.forest-gift { width: 60px; left: 20%; bottom: 19%; animation: giftFloat 1s infinite; }
+.fox { width: 190px; left: 42%; bottom: 11%; animation: foxBounce 1.7s infinite; }
+.fox-running { left: 110%; transition: left 1.2s ease-in; }
+
+.school-dora { width: 170px; left: 8%; bottom: 8%; }
+.school-gift { width: 60px; left: 20%; bottom: 18%; animation: giftFloat 1s infinite; }
+.teacher { left: 34%; bottom: 11%; font-size: 95px; animation: teacherSway 2s infinite; }
+
+.friends { width: 280px; left: 9%; bottom: 8%; animation: float 2s infinite; }
+.final-gift { width: 105px; left: 34%; bottom: 24%; animation: giftFloat 1s infinite; }
+
+.question {
+  max-width: 500px;
+  margin-left: 25%;
+  margin-right: 4%;
+  animation: cardIn .55s ease both;
+}
+
+.level-icon {
+  width: 65px;
+  height: 65px;
+  display: grid;
+  place-items: center;
+  margin: -60px auto 10px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ffd84d, #ff8a00);
+  border: 5px solid white;
+  box-shadow: 0 8px 25px rgba(0,0,0,.18);
+  font-size: 2rem;
+}
+
+.question h2 {
+  color: #5b3be7;
+  font-size: clamp(1.55rem, 4vw, 2.2rem);
+  margin-bottom: 10px;
+}
+
+.question > p {
+  line-height: 1.55;
+  margin: 9px 0;
+  font-weight: 700;
+}
+
+input {
+  width: 92%;
+  padding: 14px 16px;
+  margin: 9px 0;
+  border: 3px solid #e5defa;
+  border-radius: 15px;
+  outline: none;
+  color: #30284a;
+  background: #fbfaff;
+  transition: border .2s, box-shadow .2s;
+}
+
+input:focus {
+  border-color: #7a5cff;
+  box-shadow: 0 0 0 5px rgba(108,76,255,.12);
+}
+
+.msg {
+  min-height: 25px;
+  margin-top: 9px !important;
+  font-weight: 900 !important;
+}
+
+.msg.success { color: #0a9c73; }
+.msg.error { color: #e53b55; }
+
+.phrase {
+  display: inline-block;
+  margin: 6px 0;
+  padding: 8px 12px;
+  border-radius: 12px;
+  background: #fff1b8;
+  color: #7a5100;
+  font-weight: 900;
+  font-size: .9rem;
+}
+
+.choice-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.timer-box {
+  display: inline-block;
+  margin: 8px 0;
+  padding: 8px 18px;
+  border-radius: 999px;
+  background: #fff0f3;
+  color: #e53b55;
+  font-size: 1.3rem;
+  font-weight: 900;
+}
+
+.timer-box small { font-size: .75rem; }
+#timer.danger { animation: timerPulse .45s infinite; }
+
+/* ---------- HUD ---------- */
+
+.hud {
+  position: fixed;
+  z-index: 100;
+  top: 15px;
+  left: 15px;
+  right: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  pointer-events: none;
+}
+
+.hud-pill, .music-btn {
+  padding: 10px 15px;
+  border-radius: 999px;
+  background: rgba(28,20,64,.72);
+  color: white;
+  box-shadow: 0 8px 25px rgba(0,0,0,.18);
+  backdrop-filter: blur(8px);
+  font-weight: 900;
+}
+
+.music-btn {
+  pointer-events: auto;
+  min-width: 48px;
+  padding: 10px;
+  background: rgba(108,76,255,.88);
+}
+
+/* ---------- Victory ---------- */
+
+.fireworks {
+  position: absolute;
+  top: 8%;
+  width: 100%;
+  text-align: center;
+  font-size: clamp(2rem, 6vw, 4rem);
+  animation: celebration 1.2s infinite;
+}
+
+.victory { max-width: 540px; }
+
+.trophy {
+  font-size: 4rem;
+  animation: trophyJump 1.1s infinite;
+}
+
+.victory h1 { color: #ff3d81; }
+.victory h2 { color: #5b3be7; margin: 10px 0; }
+.victory p { line-height: 1.6; font-weight: 700; }
+.stars { margin: 15px; font-size: 1.8rem; }
+
+/* ---------- Game over ---------- */
+
+.overlay {
+  position: fixed;
+  z-index: 500;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: rgba(22,16,55,.68);
+  backdrop-filter: blur(7px);
+}
+
+.game-over-card { max-width: 400px; }
+.big-icon { font-size: 4rem; }
+.game-over-card h1 { color: #e53b55; }
+
+/* ---------- Toast ---------- */
+
+#toast {
+  position: fixed;
+  z-index: 600;
+  left: 50%;
+  bottom: 25px;
+  transform: translate(-50%, 25px);
+  opacity: 0;
+  pointer-events: none;
+  padding: 12px 18px;
+  border-radius: 14px;
+  background: #27213f;
+  color: white;
+  font-weight: 900;
+  box-shadow: 0 10px 30px rgba(0,0,0,.25);
+  transition: .3s ease;
+}
+
+#toast.show {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+/* ---------- Animations ---------- */
+
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(25px) scale(.96); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes characterWalk {
+  0%,100% { transform: translateX(0) translateY(0); }
+  50% { transform: translateX(28px) translateY(-10px); }
+}
+
+@keyframes float {
+  50% { transform: translateY(-17px); }
+}
+
+@keyframes giftFloat {
+  50% { transform: translateY(-14px) rotate(4deg); }
+}
+
+@keyframes ghostFloat {
+  50% { transform: translateY(-25px) rotate(5deg); }
+}
+
+@keyframes foxBounce {
+  50% { transform: translateX(25px); }
+}
+
+@keyframes teacherSway {
+  50% { transform: rotate(5deg); }
+}
+
+@keyframes sunPulse {
+  50% { transform: scale(1.08) rotate(8deg); }
+}
+
+@keyframes cloudMove {
+  to { transform: translateX(120vw); }
+}
+
+@keyframes celebration {
+  50% { transform: scale(1.08); }
+}
+
+@keyframes trophyJump {
+  50% { transform: translateY(-12px) rotate(-4deg); }
+}
+
+@keyframes timerPulse {
+  50% { transform: scale(1.08); }
+}
+
+/* ---------- Mobile ---------- */
+
+@media (max-width: 800px) {
+  .intro-card, .question {
+    margin: 0 4%;
+    width: 92vw;
+  }
+
+  .intro-dora { left: 2%; width: 125px; }
+  .intro-bujji { left: 25%; width: 100px; }
+  .intro-gift { left: 19%; width: 55px; }
+
+  .mountain-dora, .forest-dora, .school-dora { width: 125px; left: 2%; }
+  .river-dora { width: 110px; left: 2%; }
+  .ghost { width: 115px; left: 27%; }
+  .boat { width: 165px; }
+  .fox { width: 125px; }
+  .teacher { left: 25%; font-size: 70px; }
+  .friends { width: 190px; left: 2%; }
+  .final-gift { width: 70px; left: 30%; }
+
+  .location-tag { top: 65px; left: 10px; font-size: .78rem; }
+
+  .question {
+    position: absolute;
+    left: 50%;
+    bottom: 4%;
+    top: auto;
+    transform: translateX(-50%);
+    padding: 24px 18px 18px;
+  }
+
+  .question .level-icon { margin-top: -52px; }
+
+  .hud { left: 8px; right: 8px; top: 8px; }
+  .hud-pill { padding: 8px 10px; font-size: .8rem; }
+}

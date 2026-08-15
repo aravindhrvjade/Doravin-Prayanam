@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#6c4cff">
+  <title>Doravin Prayanam 🎁</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <!-- Background music: starts after the Start Adventure button -->
+  <audio id="bgMusic" loop preload="auto">
+    <source src="sound/background.mp3" type="audio/mpeg">
+  </audio>
+
+  <div class="sparkles" aria-hidden="true"></div>
+
+  <!-- Top HUD -->
+  <header id="hud" class="hud hidden">
+    <div class="hud-pill">🎁 <span id="stage">Mountain</span></div>
+    <div class="hud-pill">❤️ Chances: <b id="chances">2</b></div>
+    <button id="musicBtn" class="music-btn" onclick="toggleMusic()" aria-label="Toggle music">🔊</button>
+  </header>
+
+  <!-- INTRO -->
+  <section id="intro" class="screen active intro">
+    <div class="cloud cloud-1">☁️</div>
+    <div class="cloud cloud-2">☁️</div>
+    <div class="cloud cloud-3">☁️</div>
+
+    <div class="intro-characters">
+      <div class="sun">☀️</div>
+      <img src="images/dora.png" class="intro-dora" alt="Doravin">
+      <img src="images/gift.png" class="intro-gift" alt="Gift">
+      <img src="images/bujji.png" class="intro-bujji" alt="Bujji">
+    </div>
+
+    <div class="card intro-card">
+      <div class="badge">🌈 ADVENTURE GAME</div>
+      <h1>Doravin <span>Prayanam</span> 🎁</h1>
+      <p class="lead">Help Doravin deliver the special gift to Bujji's house!</p>
+
+      <div class="route">
+        <span>⛰️ Mountain</span><i>→</i>
+        <span>🌊 River</span><i>→</i>
+        <span>🦊 Fox</span><i>→</i>
+        <span>🏫 School</span><i>→</i>
+        <span>🏠 Bujji</span>
+      </div>
+
+      <div class="button-row">
+        <button class="primary-btn" onclick="startGame()">🚀 Start Adventure</button>
+        <button class="secondary-btn" onclick="cartoonSpeak('Hello! Welcome to Doravin Prayanam! Let us begin our adventure!', 1.35, 0.88)">🔊 Test Voice</button>
+      </div>
+
+      <p class="hint">💡 Answer the challenges and keep the gift safe!</p>
+    </div>
+  </section>
+
+  <!-- MOUNTAIN -->
+  <section id="mountain" class="screen scene mountain">
+    <div class="scene-shade"></div>
+    <div class="location-tag">⛰️ LEVEL 1 • MOUNTAIN</div>
+
+    <img src="images/dora.png" class="dora mountain-dora" alt="Doravin">
+    <img src="images/gift.png" class="gift mountain-gift" alt="Gift">
+    <img src="images/ghost.png" class="ghost" alt="Mountain Ghost">
+
+    <div class="card question">
+      <div class="level-icon">👻</div>
+      <h2>Mountain Ghost</h2>
+      <p>I have keys but no locks. I have space but no room. You can enter but not go outside. What am I?</p>
+      <input id="mountainAnswer" autocomplete="off" placeholder="Type your answer">
+      <button class="answer-btn" onclick="checkMountain()">✨ Answer</button>
+      <p id="mountainMsg" class="msg"></p>
+    </div>
+  </section>
+
+  <!-- RIVER -->
+  <section id="river" class="screen scene river">
+    <div class="scene-shade"></div>
+    <div class="location-tag">🌊 LEVEL 2 • RIVER</div>
+
+    <img src="images/dora.png" class="dora river-dora" alt="Doravin">
+    <img src="images/gift.png" class="gift river-gift" alt="Gift">
+    <img src="images/boat.png" id="boat" class="boat" alt="Boat">
+
+    <div class="card question">
+      <div class="level-icon">🚣</div>
+      <h2>Cross the River</h2>
+      <p>Choose the correct vehicle. Only one can cross the river.</p>
+      <div class="choice-grid">
+        <button class="choice-btn" onclick="chooseRiver('boat')">🚣 Boat</button>
+        <button class="choice-btn" onclick="chooseRiver('bike')">🏍️ Bike</button>
+        <button class="choice-btn" onclick="chooseRiver('cycle')">🚲 Cycle</button>
+      </div>
+      <p id="riverMsg" class="msg"></p>
+    </div>
+  </section>
+
+  <!-- FOX -->
+  <section id="fox" class="screen scene forest">
+    <div class="scene-shade"></div>
+    <div class="location-tag">🦊 LEVEL 3 • FOREST</div>
+
+    <img src="images/dora.png" class="dora forest-dora" alt="Doravin">
+    <img src="images/gift.png" class="gift forest-gift" alt="Gift">
+    <img src="images/fox.png" class="fox" alt="Fox">
+
+    <div class="card question">
+      <div class="level-icon">🦊</div>
+      <h2>Clever Fox</h2>
+      <p>Type the magic phrase to scare the fox away:</p>
+      <div class="phrase">“kulla nari thiruda koodathu”</div>
+      <input id="foxAnswer" autocomplete="off" placeholder="Type the phrase">
+      <button class="answer-btn" onclick="checkFox()">📢 Shout!</button>
+      <p id="foxMsg" class="msg"></p>
+    </div>
+  </section>
+
+  <!-- SCHOOL -->
+  <section id="school" class="screen scene school">
+    <div class="scene-shade"></div>
+    <div class="location-tag">🏫 LEVEL 4 • SCHOOL</div>
+
+    <img src="images/dora.png" class="dora school-dora" alt="Doravin">
+    <img src="images/gift.png" class="gift school-gift" alt="Gift">
+    <div class="teacher">👩‍🏫</div>
+
+    <div class="card question">
+      <div class="level-icon">📚</div>
+      <h2>Math Challenge</h2>
+      <p>Enter any multiple of <b>10</b>, except 0.</p>
+      <div class="timer-box">⏱️ <span id="timer">10</span><small> seconds</small></div>
+      <input id="mathAnswer" type="number" inputmode="numeric" placeholder="Enter a number">
+      <button class="answer-btn" onclick="checkMath()">🎯 Submit</button>
+      <p id="mathMsg" class="msg"></p>
+    </div>
+  </section>
+
+  <!-- VICTORY -->
+  <section id="house" class="screen scene house">
+    <div class="scene-shade"></div>
+    <div class="fireworks">🎆 ✨ 🎉 ✨ 🎆</div>
+
+    <img src="images/dora_bujji.png" class="friends" alt="Doravin and Bujji">
+    <img src="images/gift.png" class="final-gift" alt="Gift">
+
+    <div class="card victory">
+      <div class="trophy">🏆</div>
+      <h1>Congratulations! 🎉</h1>
+      <h2>You reached Bujji's house!</h2>
+      <p>You completed <b>Doravin Prayanam</b> and delivered the gift safely. 💖</p>
+      <div class="stars">⭐ ⭐ ⭐</div>
+      <button class="primary-btn" onclick="location.reload()">🔄 Play Again</button>
+    </div>
+  </section>
+
+  <!-- GAME OVER -->
+  <div id="gameOver" class="overlay hidden">
+    <div class="card game-over-card">
+      <div class="big-icon">😢</div>
+      <h1>Oh No!</h1>
+      <p>You used all your chances.</p>
+      <button class="primary-btn" onclick="location.reload()">🔄 Try Again</button>
+    </div>
+  </div>
+
+  <div id="toast" role="status"></div>
+  <script src="script.js"></script>
+</body>
+</html>
